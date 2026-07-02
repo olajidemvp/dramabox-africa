@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { StoreProvider } from './store'
+import { deviceId, track } from './lib/analytics'
 import { BottomNav } from './components/BottomNav'
 import { Home } from './pages/Home'
 import { Discover } from './pages/Discover'
@@ -12,6 +14,10 @@ import { Profile } from './pages/Profile'
 function Shell() {
   const location = useLocation()
   const isPlayer = location.pathname.startsWith('/watch/')
+
+  useEffect(() => {
+    track('page_view', { path: location.pathname })
+  }, [location.pathname])
 
   return (
     <div className="mx-auto h-full max-w-md bg-[#0a0a0d] shadow-2xl">
@@ -32,6 +38,12 @@ function Shell() {
 }
 
 export default function App() {
+  useEffect(() => {
+    track('app_open', {})
+    const ref = new URLSearchParams(location.search).get('ref')
+    if (ref && ref !== deviceId) track('referred_visit', { ref })
+  }, [])
+
   return (
     <StoreProvider>
       <BrowserRouter>

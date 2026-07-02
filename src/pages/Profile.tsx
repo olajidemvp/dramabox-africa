@@ -90,7 +90,7 @@ export function Profile() {
       )}
 
       <p className="mt-8 text-center text-[10px] text-white/30">
-        DramaBox Africa clone · demo build · v0.1
+        Wahala · early access · v0.2
       </p>
     </div>
   )

@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getSeries } from '../data/catalog'
 import { useStore } from '../store'
+import { shareSeries } from '../lib/share'
 
 export function SeriesDetail() {
   const { id } = useParams()
@@ -69,6 +70,13 @@ export function SeriesDetail() {
             aria-label="Save to my list"
           >
             {saved ? '✓' : '📌'}
+          </button>
+          <button
+            onClick={() => shareSeries(series.id, series.title, 'series_detail')}
+            className="rounded-xl bg-surface-2 px-4 text-lg"
+            aria-label="Share series"
+          >
+            📤
           </button>
         </div>
 

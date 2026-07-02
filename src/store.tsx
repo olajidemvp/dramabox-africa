@@ -24,6 +24,10 @@ interface AppState {
   progress: Record<string, number> // seriesId -> last episode number watched
   currency: string
   dataSaver: boolean
+  checkinLast: string
+  checkinStreak: number
+  votedFor: string
+  notified: string[]
   addCoins: (n: number) => void
   unlockEpisode: (epId: string, price: number) => boolean
   isUnlocked: (epId: string) => boolean
@@ -32,9 +36,13 @@ interface AppState {
   setProgress: (seriesId: string, ep: number) => void
   setCurrency: (code: string) => void
   setDataSaver: (on: boolean) => void
+  claimCheckin: () => { bonus: number; streak: number } | null
+  canCheckin: () => boolean
+  voteNext: (optionId: string) => void
+  addNotify: (title: string) => void
 }
 
-const KEY = 'dramabox-africa-state-v1'
+const KEY = 'wahala-state-v1'
 
 interface Persisted {
   coins: number
@@ -43,16 +51,39 @@ interface Persisted {
   progress: Record<string, number>
   currency: string
   dataSaver: boolean
+  checkinLast: string // yyyy-mm-dd of last claimed daily reward
+  checkinStreak: number
+  votedFor: string // vote-next option id, '' = not voted
+  notified: string[] // coming-soon ids with notify requested
+}
+
+const DEFAULTS: Persisted = {
+  coins: 100,
+  unlocked: [],
+  myList: [],
+  progress: {},
+  currency: 'NGN',
+  dataSaver: false,
+  checkinLast: '',
+  checkinStreak: 0,
+  votedFor: '',
+  notified: [],
 }
 
 function load(): Persisted {
   try {
     const raw = localStorage.getItem(KEY)
-    if (raw) return JSON.parse(raw)
+    if (raw) return { ...DEFAULTS, ...JSON.parse(raw) }
   } catch {
     /* corrupted state falls back to defaults */
   }
-  return { coins: 100, unlocked: [], myList: [], progress: {}, currency: 'NGN', dataSaver: false }
+  return DEFAULTS
+}
+
+const CHECKIN_REWARDS = [20, 25, 30, 35, 40, 50, 100] // day 1..7, repeats
+
+function todayStr(): string {
+  return new Date().toISOString().slice(0, 10)
 }
 
 const Ctx = createContext<AppState | null>(null)
@@ -87,6 +118,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       })),
     setCurrency: (code) => setState((s) => ({ ...s, currency: code })),
     setDataSaver: (on) => setState((s) => ({ ...s, dataSaver: on })),
+    canCheckin: () => state.checkinLast !== todayStr(),
+    claimCheckin: () => {
+      const today = todayStr()
+      if (state.checkinLast === today) return null
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10)
+      const streak = state.checkinLast === yesterday ? state.checkinStreak + 1 : 1
+      const bonus = CHECKIN_REWARDS[(streak - 1) % CHECKIN_REWARDS.length]
+      setState((s) => ({ ...s, coins: s.coins + bonus, checkinLast: today, checkinStreak: streak }))
+      return { bonus, streak }
+    },
+    voteNext: (optionId) => setState((s) => ({ ...s, votedFor: optionId })),
+    addNotify: (title) =>
+      setState((s) => (s.notified.includes(title) ? s : { ...s, notified: [...s.notified, title] })),
   }
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>

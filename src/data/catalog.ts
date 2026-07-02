@@ -1,3 +1,5 @@
+import { EP_PRICE } from '../lib/analytics'
+
 export interface Episode {
   id: string
   number: number
@@ -36,7 +38,7 @@ function makeEpisodes(seriesId: string, count: number, freeCount: number): Episo
     videoUrl: V + CLIPS[i % CLIPS.length],
     durationSec: 60 + ((i * 13) % 60),
     free: i < freeCount,
-    coinPrice: 50,
+    coinPrice: EP_PRICE,
   }))
 }
 
@@ -227,3 +229,51 @@ export const GENRES = ['All', 'Romance', 'Revenge', 'Family Drama', 'Mystery', '
 export function getSeries(id: string): Series | undefined {
   return SERIES.find((s) => s.id === id)
 }
+
+// Fake-door "coming soon" titles — measure notify clicks per concept/market.
+export interface ComingSoon {
+  id: string
+  title: string
+  hook: string
+  country: string
+  poster: { from: string; to: string; emoji: string }
+}
+
+export const COMING_SOON: ComingSoon[] = [
+  {
+    id: 'queen-of-owambe',
+    title: 'Queen of Owambe',
+    hook: 'Lagos party planner discovers her biggest client is her runaway father.',
+    country: 'Nigeria',
+    poster: { from: '#86198f', to: '#f59e0b', emoji: '🎉' },
+  },
+  {
+    id: 'boda-boda-love',
+    title: 'Boda Boda Love',
+    hook: 'Nairobi rider carries one passenger who changes his life forever.',
+    country: 'Kenya',
+    poster: { from: '#166534', to: '#fbbf24', emoji: '🏍️' },
+  },
+  {
+    id: 'campus-cruise',
+    title: 'Campus Cruise',
+    hook: 'Legon fresher juggles two identities: scholarship kid by day, TikTok star by night.',
+    country: 'Ghana',
+    poster: { from: '#1d4ed8', to: '#f43f5e', emoji: '🎓' },
+  },
+  {
+    id: 'herbalists-daughter',
+    title: "The Herbalist's Daughter",
+    hook: 'She can cure anything — except the curse on the family that destroyed hers.',
+    country: 'Nigeria',
+    poster: { from: '#14532d', to: '#84cc16', emoji: '🌿' },
+  },
+]
+
+// Fake-door vote — measures which concept pulls demand next.
+export const VOTE_OPTIONS = [
+  { id: 'village-billionaire', label: '💰 Village boy returns a billionaire (Nigeria)' },
+  { id: 'campus-triangle', label: '❤️ University love triangle (Ghana)' },
+  { id: 'matatu-comedy', label: '😂 Matatu crew comedy (Kenya)' },
+  { id: 'palace-drama', label: '👑 Palace co-wives drama (Senegal)' },
+]

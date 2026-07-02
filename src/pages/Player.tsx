@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getSeries } from '../data/catalog'
 import { UnlockModal } from '../components/UnlockModal'
 import { useStore } from '../store'
+import { track } from '../lib/analytics'
+import { shareSeries } from '../lib/share'
 
 export function Player() {
   const { id, ep } = useParams()
@@ -24,7 +26,10 @@ export function Player() {
     setPaused(false)
     setProgressPct(0)
     setShowUnlock(!!episode && !unlocked)
-    if (series && episode && unlocked) store.setProgress(series.id, episode.number)
+    if (series && episode && unlocked) {
+      store.setProgress(series.id, episode.number)
+      track('episode_start', { series: series.id, ep: episode.number, free: episode.free })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, epNum, unlocked])
 
@@ -83,7 +88,10 @@ export function Player() {
             const v = e.currentTarget
             if (v.duration) setProgressPct((v.currentTime / v.duration) * 100)
           }}
-          onEnded={() => goTo(epNum + 1)}
+          onEnded={() => {
+            track('episode_complete', { series: series.id, ep: episode.number, free: episode.free })
+            goTo(epNum + 1)
+          }}
         />
       ) : (
         <div
@@ -126,6 +134,13 @@ export function Player() {
           <span className="text-2xl">{store.inMyList(series.id) ? '💛' : '🤍'}</span>
           Save
         </button>
+        <button
+          onClick={() => shareSeries(series.id, series.title, 'player')}
+          className="flex flex-col items-center text-[10px] text-white/80"
+        >
+          <span className="text-2xl">📤</span>
+          Share
+        </button>
         <button onClick={() => goTo(epNum + 1)} className="flex flex-col items-center text-[10px] text-white/80">
           <span className="text-2xl">⏭️</span>
           Next EP
@@ -145,6 +160,7 @@ export function Player() {
       {showUnlock && (
         <UnlockModal
           episode={episode}
+          seriesId={series.id}
           onUnlocked={() => setShowUnlock(false)}
           onClose={() => navigate(`/series/${series.id}`)}
         />
