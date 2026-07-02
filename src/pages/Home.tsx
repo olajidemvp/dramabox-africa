@@ -171,6 +171,36 @@ export function Home() {
         )}
       </section>
 
+      {/* FAQ — matches FAQPage structured data in index.html */}
+      <section className="mx-4 mt-6 rounded-2xl bg-surface-2 p-4">
+        <h2 className="text-sm font-bold">❓ Questions people ask</h2>
+        <div className="mt-3 space-y-3">
+          {[
+            {
+              q: 'What is Wahala?',
+              a: 'A short drama streaming app made for Africa: 1–2 minute vertical episodes with stories from Nigeria, Kenya, Ghana, South Africa and more.',
+            },
+            {
+              q: 'Is Wahala free to watch?',
+              a: 'The first episodes of every series are free. Later episodes unlock with coins — and daily check-in rewards give you free coins.',
+            },
+            {
+              q: 'How do I pay in Nigeria, Kenya or Ghana?',
+              a: 'M-Pesa (Kenya, Tanzania), MTN MoMo (Ghana, Uganda), Airtel Money, OPay and bank transfer (Nigeria), or Visa / Mastercard / Verve cards.',
+            },
+            {
+              q: 'Does Wahala work on slow internet?',
+              a: 'Yes — episodes are short and light, and Data Saver mode cuts video data use so you can binge on 3G.',
+            },
+          ].map((f) => (
+            <details key={f.q} className="group">
+              <summary className="cursor-pointer text-xs font-semibold text-white/90">{f.q}</summary>
+              <p className="mt-1 text-[11px] leading-relaxed text-white/60">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
       {checkinToast && (
         <div className="fixed inset-x-4 bottom-20 z-50 mx-auto max-w-md rounded-xl bg-surface-3 p-3 text-center text-xs font-semibold coin-pop">
           {checkinToast}

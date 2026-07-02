@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { StoreProvider } from './store'
 import { deviceId, track } from './lib/analytics'
+import { applyMeta } from './lib/seo'
 import { BottomNav } from './components/BottomNav'
 import { Home } from './pages/Home'
 import { Discover } from './pages/Discover'
@@ -17,6 +18,8 @@ function Shell() {
 
   useEffect(() => {
     track('page_view', { path: location.pathname })
+    // Series pages set their own richer meta in SeriesDetail.
+    if (!location.pathname.startsWith('/series/')) applyMeta(location.pathname)
   }, [location.pathname])
 
   return (

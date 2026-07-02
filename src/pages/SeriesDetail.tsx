@@ -1,13 +1,24 @@
+import { useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getSeries } from '../data/catalog'
 import { useStore } from '../store'
 import { shareSeries } from '../lib/share'
+import { applyMeta, seriesMeta } from '../lib/seo'
 
 export function SeriesDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
   const store = useStore()
   const series = id ? getSeries(id) : undefined
+
+  useEffect(() => {
+    if (series) {
+      applyMeta(
+        `/series/${series.id}`,
+        seriesMeta(series.title, series.country, series.genre, series.episodeCount, series.synopsis),
+      )
+    }
+  }, [series])
 
   if (!series) {
     return (
