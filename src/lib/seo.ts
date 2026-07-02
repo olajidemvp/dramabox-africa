@@ -22,6 +22,10 @@ const ROUTE_META: Record<string, { title: string; desc: string }> = {
     title: 'My Profile | Wahala — Short African Dramas',
     desc: 'Your watch history, coins and settings on Wahala.',
   },
+  '/creators': {
+    title: 'Submit Your Vertical Drama Series | Wahala for Creators',
+    desc: 'African filmmaker with a short vertical drama? Submit your catalogue to Wahala — revenue share on every unlock, audience in 9+ countries, you keep your rights.',
+  },
 }
 
 function setTag(selector: string, create: () => HTMLElement, attr: string, value: string) {

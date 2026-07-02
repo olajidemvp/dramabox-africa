@@ -171,6 +171,18 @@ export function Home() {
         )}
       </section>
 
+      {/* Creator recruitment */}
+      <Link
+        to="/creators"
+        className="mx-4 mt-6 block rounded-2xl bg-gradient-to-r from-[#3b0a08] to-[#1a0b2e] p-4"
+      >
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gold">For Creators</p>
+        <p className="mt-1 text-sm font-extrabold">Make vertical dramas? Get paid for them. 🎬</p>
+        <p className="mt-0.5 text-[11px] text-white/60">
+          Submit your series — revenue share, 9+ countries, you keep your rights →
+        </p>
+      </Link>
+
       {/* FAQ — matches FAQPage structured data in index.html */}
       <section className="mx-4 mt-6 rounded-2xl bg-surface-2 p-4">
         <h2 className="text-sm font-bold">❓ Questions people ask</h2>

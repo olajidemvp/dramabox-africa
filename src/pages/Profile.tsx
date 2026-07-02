@@ -60,6 +60,9 @@ export function Profile() {
         <Link to="/wallet" className="block border-t border-white/5 p-4 text-sm font-semibold">
           🪙 Top up coins →
         </Link>
+        <Link to="/creators" className="block border-t border-white/5 p-4 text-sm font-semibold">
+          🎬 I make dramas — submit my series →
+        </Link>
       </section>
 
       {watching > 0 && (

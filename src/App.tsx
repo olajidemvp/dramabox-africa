@@ -11,6 +11,7 @@ import { SeriesDetail } from './pages/SeriesDetail'
 import { Player } from './pages/Player'
 import { Wallet } from './pages/Wallet'
 import { Profile } from './pages/Profile'
+import { Creators } from './pages/Creators'
 
 function Shell() {
   const location = useLocation()
@@ -33,6 +34,7 @@ function Shell() {
           <Route path="/watch/:id/:ep" element={<Player />} />
           <Route path="/wallet" element={<Wallet />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/creators" element={<Creators />} />
         </Routes>
       </div>
       {!isPlayer && <BottomNav />}
