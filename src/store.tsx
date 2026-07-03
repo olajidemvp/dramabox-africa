@@ -28,6 +28,10 @@ interface AppState {
   checkinStreak: number
   votedFor: string
   notified: string[]
+  onboarded: boolean
+  viewerCountry: string
+  favGenres: string[]
+  founding: boolean
   addCoins: (n: number) => void
   unlockEpisode: (epId: string, price: number) => boolean
   isUnlocked: (epId: string) => boolean
@@ -40,6 +44,8 @@ interface AppState {
   canCheckin: () => boolean
   voteNext: (optionId: string) => void
   addNotify: (title: string) => void
+  completeOnboarding: (country: string, genres: string[]) => void
+  setFounding: () => void
 }
 
 const KEY = 'wahala-state-v1'
@@ -55,6 +61,10 @@ interface Persisted {
   checkinStreak: number
   votedFor: string // vote-next option id, '' = not voted
   notified: string[] // coming-soon ids with notify requested
+  onboarded: boolean
+  viewerCountry: string
+  favGenres: string[]
+  founding: boolean // reserved a founding-member spot
 }
 
 const DEFAULTS: Persisted = {
@@ -68,6 +78,10 @@ const DEFAULTS: Persisted = {
   checkinStreak: 0,
   votedFor: '',
   notified: [],
+  onboarded: false,
+  viewerCountry: '',
+  favGenres: [],
+  founding: false,
 }
 
 function load(): Persisted {
@@ -131,6 +145,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     voteNext: (optionId) => setState((s) => ({ ...s, votedFor: optionId })),
     addNotify: (title) =>
       setState((s) => (s.notified.includes(title) ? s : { ...s, notified: [...s.notified, title] })),
+    completeOnboarding: (country, genres) =>
+      setState((s) => ({ ...s, onboarded: true, viewerCountry: country, favGenres: genres })),
+    setFounding: () => setState((s) => ({ ...s, founding: true })),
   }
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>

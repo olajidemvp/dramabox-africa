@@ -26,16 +26,17 @@ export interface Series {
   episodes: Episode[]
 }
 
-// Demo playback sources (local CC0 clips, ~1MB each — data-friendly)
-const V = '/videos/'
-const CLIPS = ['clip1.mp4', 'clip2.mp4', 'clip3.mp4', 'clip4.mp4', 'clip5.mp4', 'clip6.mp4']
+// Pre-launch teaser: every episode plays the same "Coming Soon" clip until
+// real content lands. The app is a validation vehicle — the teaser lets people
+// experience the vertical player while we measure demand and payment intent.
+const COMING_SOON_VIDEO = '/videos/coming-soon.mp4'
 
 function makeEpisodes(seriesId: string, count: number, freeCount: number): Episode[] {
   return Array.from({ length: count }, (_, i) => ({
     id: `${seriesId}-ep${i + 1}`,
     number: i + 1,
     title: `Episode ${i + 1}`,
-    videoUrl: V + CLIPS[i % CLIPS.length],
+    videoUrl: COMING_SOON_VIDEO,
     durationSec: 60 + ((i * 13) % 60),
     free: i < freeCount,
     coinPrice: EP_PRICE,

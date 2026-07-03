@@ -35,6 +35,21 @@ export const EP_PRICE = VARIANT_PRICES[priceVariant] ?? 50
 
 const BUFFER_KEY = 'wahala-event-log'
 
+// Founder dashboard read path — calls the aggregate-only RPC (no PII returned).
+export async function readInsights(): Promise<Record<string, unknown>> {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/wahala_insights`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: '{}',
+  })
+  if (!res.ok) throw new Error(`insights ${res.status}`)
+  return res.json()
+}
+
 export function track(event: string, props: Record<string, unknown> = {}): void {
   const enriched = { ...props, variant: priceVariant, ep_price: EP_PRICE }
 

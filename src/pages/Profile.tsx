@@ -63,6 +63,9 @@ export function Profile() {
         <Link to="/creators" className="block border-t border-white/5 p-4 text-sm font-semibold">
           🎬 I make dramas — submit my series →
         </Link>
+        <Link to="/insights" className="block border-t border-white/5 p-4 text-sm font-semibold">
+          📊 Founder insights dashboard →
+        </Link>
       </section>
 
       {watching > 0 && (

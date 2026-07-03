@@ -5,6 +5,10 @@ import { UnlockModal } from '../components/UnlockModal'
 import { useStore } from '../store'
 import { track } from '../lib/analytics'
 import { shareSeries } from '../lib/share'
+import { openFounding } from '../lib/ui'
+
+// Session counter — nudge founding reservation once the viewer is clearly hooked.
+let sessionCompletes = 0
 
 export function Player() {
   const { id, ep } = useParams()
@@ -90,7 +94,10 @@ export function Player() {
           }}
           onEnded={() => {
             track('episode_complete', { series: series.id, ep: episode.number, free: episode.free })
+            sessionCompletes += 1
             goTo(epNum + 1)
+            // Hooked viewer, not yet committed → ask for founding reservation.
+            if (sessionCompletes === 2 && !store.founding) openFounding('player_engaged')
           }}
         />
       ) : (

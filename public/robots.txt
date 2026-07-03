@@ -3,6 +3,7 @@
 
 User-agent: *
 Allow: /
+Disallow: /insights
 
 # AI search / answer engines — explicitly allowed
 User-agent: GPTBot

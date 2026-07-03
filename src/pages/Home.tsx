@@ -4,6 +4,7 @@ import { COMING_SOON, RAILS, VOTE_OPTIONS, getSeries } from '../data/catalog'
 import { Rail } from '../components/Rail'
 import { useStore } from '../store'
 import { track } from '../lib/analytics'
+import { openFounding } from '../lib/ui'
 
 const HERO_IDS = ['accra-throne', 'lagos-billionaire', 'joburg-vows', 'nairobi-heartbeat']
 
@@ -141,6 +142,22 @@ export function Home() {
             ))}
           </div>
         </section>
+      )}
+
+      {/* Founding-member CTA — pre-launch commitment capture */}
+      {!store.founding && (
+        <button
+          onClick={() => openFounding('home_banner')}
+          className="mx-4 mt-5 flex w-[calc(100%-2rem)] items-center gap-3 overflow-hidden rounded-2xl border border-gold/30 bg-gradient-to-r from-[#1a0b2e] to-[#3b0a08] p-4 text-left transition hover:brightness-125 md:mx-0 md:w-full"
+        >
+          <span className="text-3xl">🌟</span>
+          <span className="flex-1">
+            <span className="block text-sm font-extrabold md:text-base">Become a Founding Viewer</span>
+            <span className="block text-[11px] text-white/60">
+              Full series drop soon — reserve your spot, get bonus coins + first access →
+            </span>
+          </span>
+        </button>
       )}
 
       {RAILS.map((rail, i) => (
