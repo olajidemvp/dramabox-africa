@@ -4,6 +4,7 @@ import { StoreProvider } from './store'
 import { deviceId, track } from './lib/analytics'
 import { applyMeta } from './lib/seo'
 import { BottomNav } from './components/BottomNav'
+import { TopNav } from './components/TopNav'
 import { Home } from './pages/Home'
 import { Discover } from './pages/Discover'
 import { MyList } from './pages/MyList'
@@ -24,8 +25,9 @@ function Shell() {
   }, [location.pathname])
 
   return (
-    <div className="mx-auto h-full max-w-md bg-[#0a0a0d] shadow-2xl">
-      <div className="h-full overflow-y-auto">
+    <div className="flex h-full flex-col bg-[#0a0a0d]">
+      {!isPlayer && <TopNav />}
+      <div className="min-h-0 flex-1 overflow-y-auto">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/discover" element={<Discover />} />

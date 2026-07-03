@@ -59,9 +59,9 @@ export function Creators() {
   }
 
   return (
-    <div className="pb-24">
+    <div className="mx-auto w-full max-w-3xl pb-24 md:px-6 md:pb-12">
       {/* Hero */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#3b0a08] via-[#1a0b2e] to-[#0a0a0d] px-5 pb-8 pt-10">
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#3b0a08] via-[#1a0b2e] to-[#0a0a0d] px-5 pb-8 pt-10 md:mt-6 md:rounded-2xl md:px-8">
         <button
           onClick={() => navigate(-1)}
           className="absolute left-3 top-3 rounded-full bg-black/40 px-3 py-1.5 text-sm"
@@ -85,7 +85,7 @@ export function Creators() {
       </div>
 
       {/* Why submit */}
-      <div className="mt-5 grid grid-cols-3 gap-2 px-4 text-center">
+      <div className="mt-5 grid grid-cols-3 gap-2 px-4 text-center md:px-0">
         {[
           { icon: '💰', label: 'Revenue share on every unlock' },
           { icon: '📱', label: 'Audience across 9+ countries' },
@@ -104,7 +104,7 @@ export function Creators() {
       </p>
 
       {/* Form */}
-      <div className="mt-6 px-4">
+      <div className="mt-6 px-4 md:px-0">
         <h2 className="text-sm font-bold">Submit your catalogue</h2>
         <p className="mt-1 text-[11px] text-white/50">
           Finished series, pilots, or works in progress — we want to see it all.

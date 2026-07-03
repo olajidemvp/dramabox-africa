@@ -9,12 +9,12 @@ export function Profile() {
   const unlockedCount = store.unlocked.length
 
   return (
-    <div className="pb-24">
-      <header className="px-4 pt-4">
-        <h1 className="text-lg font-extrabold">Me</h1>
+    <div className="mx-auto w-full max-w-3xl pb-24 md:px-6 md:pb-12">
+      <header className="px-4 pt-4 md:px-0 md:pt-6">
+        <h1 className="text-lg font-extrabold md:text-2xl">Me</h1>
       </header>
 
-      <div className="mx-4 mt-3 flex items-center gap-3 rounded-2xl bg-surface-2 p-4">
+      <div className="mx-4 mt-3 flex items-center gap-3 rounded-2xl bg-surface-2 p-4 md:mx-0">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-brand to-gold text-2xl">
           🎭
         </div>
@@ -24,7 +24,7 @@ export function Profile() {
         </div>
       </div>
 
-      <div className="mx-4 mt-3 grid grid-cols-3 gap-3 text-center">
+      <div className="mx-4 mt-3 grid grid-cols-3 gap-3 text-center md:mx-0">
         {[
           { label: 'Coins', value: `🪙 ${store.coins}` },
           { label: 'Watching', value: watching },
@@ -37,7 +37,7 @@ export function Profile() {
         ))}
       </div>
 
-      <section className="mx-4 mt-5 rounded-2xl bg-surface-2">
+      <section className="mx-4 mt-5 rounded-2xl bg-surface-2 md:mx-0">
         <div className="flex items-center justify-between p-4">
           <div>
             <p className="text-sm font-semibold">📶 Data Saver</p>
@@ -66,7 +66,7 @@ export function Profile() {
       </section>
 
       {watching > 0 && (
-        <section className="mx-4 mt-5">
+        <section className="mx-4 mt-5 md:mx-0">
           <h2 className="text-sm font-bold">Watch history</h2>
           <div className="mt-2 space-y-2">
             {Object.entries(store.progress).map(([sid, ep]) => {

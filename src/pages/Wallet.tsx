@@ -61,12 +61,12 @@ export function Wallet() {
   }
 
   return (
-    <div className="pb-24">
-      <header className="px-4 pt-4">
-        <h1 className="text-lg font-extrabold">Wallet</h1>
+    <div className="mx-auto w-full max-w-3xl pb-24 md:px-6 md:pb-12">
+      <header className="px-4 pt-4 md:px-0 md:pt-6">
+        <h1 className="text-lg font-extrabold md:text-2xl">Wallet</h1>
       </header>
 
-      <div className="mx-4 mt-3 rounded-2xl bg-gradient-to-br from-brand to-[#a3170c] p-5">
+      <div className="mx-4 mt-3 rounded-2xl bg-gradient-to-br from-brand to-[#a3170c] p-5 md:mx-0">
         <p className="text-xs text-white/80">Coin balance</p>
         <p className="mt-1 text-3xl font-extrabold">🪙 {store.coins.toLocaleString()}</p>
         <p className="mt-1 text-xs text-white/70">
@@ -75,9 +75,9 @@ export function Wallet() {
         </p>
       </div>
 
-      <section className="mt-5 px-4">
+      <section className="mt-5 px-4 md:px-0">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold">Top up</h2>
+          <h2 className="text-sm font-bold md:text-base">Top up</h2>
           <select
             value={store.currency}
             onChange={(e) => store.setCurrency(e.target.value)}
@@ -89,7 +89,7 @@ export function Wallet() {
           </select>
         </div>
 
-        <div className="mt-3 grid grid-cols-2 gap-3">
+        <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-4">
           {PACKS.map((p, i) => {
             const packPrice = p.coins * cur.perCoin
             return (
@@ -116,8 +116,8 @@ export function Wallet() {
         </div>
       </section>
 
-      <section className="mt-5 px-4">
-        <h2 className="text-sm font-bold">Pay with</h2>
+      <section className="mt-5 px-4 md:px-0">
+        <h2 className="text-sm font-bold md:text-base">Pay with</h2>
         <div className="mt-2 space-y-2">
           {PAY_METHODS.map((m) => (
             <button

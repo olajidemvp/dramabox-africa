@@ -10,7 +10,7 @@ const TABS = [
 
 export function BottomNav() {
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto flex max-w-md items-center justify-around border-t border-white/10 bg-surface/95 px-2 py-2 backdrop-blur">
+    <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-around border-t border-white/10 bg-surface/95 px-2 py-2 backdrop-blur md:hidden">
       {TABS.map((t) => (
         <NavLink
           key={t.to}

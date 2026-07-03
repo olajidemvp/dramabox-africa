@@ -58,9 +58,9 @@ export function Player() {
     }
   }
 
-  return (
+  const videoPane = (
     <div
-      className="relative h-full w-full overflow-hidden bg-black no-select"
+      className="relative h-full w-full overflow-hidden bg-black no-select lg:aspect-[9/16] lg:h-[85vh] lg:w-auto lg:rounded-2xl lg:shadow-2xl lg:shadow-black/70"
       onTouchStart={(e) => (touchStartY.current = e.touches[0].clientY)}
       onTouchEnd={(e) => {
         if (touchStartY.current === null) return
@@ -95,7 +95,7 @@ export function Player() {
         />
       ) : (
         <div
-          className="flex h-full w-full items-center justify-center text-8xl blur-none"
+          className="flex h-full w-full items-center justify-center text-8xl"
           style={{ background: `linear-gradient(160deg, ${series.poster.from}, ${series.poster.to})` }}
         >
           <span className="opacity-40">{series.poster.emoji}</span>
@@ -113,14 +113,14 @@ export function Player() {
 
       {/* Top bar */}
       <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between bg-gradient-to-b from-black/70 to-transparent p-3 pb-8">
-        <button onClick={() => navigate(`/series/${series.id}`)} className="rounded-full bg-black/40 px-3 py-1.5 text-sm">
+        <button onClick={() => navigate(`/series/${series.id}`)} className="rounded-full bg-black/40 px-3 py-1.5 text-sm transition hover:bg-black/70">
           ←
         </button>
         <div className="text-center">
           <p className="max-w-52 truncate text-xs font-bold">{series.title}</p>
           <p className="text-[10px] text-white/60">EP {epNum} / {series.episodeCount}</p>
         </div>
-        <Link to="/wallet" className="rounded-full bg-black/40 px-2.5 py-1.5 text-xs font-semibold">
+        <Link to="/wallet" className="rounded-full bg-black/40 px-2.5 py-1.5 text-xs font-semibold transition hover:bg-black/70">
           🪙 {store.coins}
         </Link>
       </div>
@@ -129,19 +129,19 @@ export function Player() {
       <div className="absolute bottom-28 right-3 z-20 flex flex-col items-center gap-4 text-center">
         <button
           onClick={() => store.toggleMyList(series.id)}
-          className="flex flex-col items-center text-[10px] text-white/80"
+          className="flex flex-col items-center text-[10px] text-white/80 transition hover:scale-110"
         >
           <span className="text-2xl">{store.inMyList(series.id) ? '💛' : '🤍'}</span>
           Save
         </button>
         <button
           onClick={() => shareSeries(series.id, series.title, 'player')}
-          className="flex flex-col items-center text-[10px] text-white/80"
+          className="flex flex-col items-center text-[10px] text-white/80 transition hover:scale-110"
         >
           <span className="text-2xl">📤</span>
           Share
         </button>
-        <button onClick={() => goTo(epNum + 1)} className="flex flex-col items-center text-[10px] text-white/80">
+        <button onClick={() => goTo(epNum + 1)} className="flex flex-col items-center text-[10px] text-white/80 transition hover:scale-110">
           <span className="text-2xl">⏭️</span>
           Next EP
         </button>
@@ -154,7 +154,7 @@ export function Player() {
         <div className="mt-3 h-0.5 w-full rounded bg-white/20">
           <div className="h-full rounded bg-brand" style={{ width: `${progressPct}%` }} />
         </div>
-        <p className="mt-2 text-center text-[10px] text-white/40">swipe up for next episode</p>
+        <p className="mt-2 text-center text-[10px] text-white/40 lg:hidden">swipe up for next episode</p>
       </div>
 
       {showUnlock && (
@@ -165,6 +165,54 @@ export function Player() {
           onClose={() => navigate(`/series/${series.id}`)}
         />
       )}
+    </div>
+  )
+
+  return (
+    <div className="relative h-full w-full overflow-hidden">
+      {/* Desktop ambient backdrop */}
+      <div
+        className="absolute inset-0 hidden opacity-40 blur-3xl lg:block"
+        style={{ background: `linear-gradient(120deg, ${series.poster.from}, #0a0a0d 45%, ${series.poster.to})` }}
+      />
+
+      <div className="relative flex h-full items-center justify-center gap-8 lg:px-8">
+        {videoPane}
+
+        {/* Desktop episode panel */}
+        <aside className="hidden h-[85vh] w-80 flex-col overflow-hidden rounded-2xl bg-surface/80 backdrop-blur lg:flex">
+          <div className="border-b border-white/10 p-4">
+            <h2 className="text-base font-extrabold">{series.title}</h2>
+            <p className="mt-1 text-xs text-white/60">
+              ★ {series.rating} · {series.genre} · {series.country}
+            </p>
+            <p className="mt-2 line-clamp-3 text-xs leading-relaxed text-white/50">{series.synopsis}</p>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto p-4">
+            <p className="mb-2 text-xs font-bold text-white/70">Episodes</p>
+            <div className="grid grid-cols-6 gap-1.5">
+              {series.episodes.map((e2) => {
+                const isCurrent = e2.number === epNum
+                const epUnlocked = e2.free || store.isUnlocked(e2.id)
+                return (
+                  <button
+                    key={e2.id}
+                    onClick={() => goTo(e2.number)}
+                    className={`relative flex aspect-square items-center justify-center rounded-md text-xs font-semibold transition ${
+                      isCurrent
+                        ? 'bg-brand text-white'
+                        : 'bg-surface-2 text-white/70 hover:bg-surface-3 hover:text-white'
+                    }`}
+                  >
+                    {e2.number}
+                    {!epUnlocked && <span className="absolute right-0.5 top-0.5 text-[7px]">🔒</span>}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   )
 }

@@ -8,9 +8,9 @@ export function MyList() {
   const items = store.myList.map((id) => getSeries(id)).filter(Boolean)
 
   return (
-    <div className="pb-20">
-      <header className="px-4 pt-4">
-        <h1 className="text-lg font-extrabold">My List</h1>
+    <div className="mx-auto w-full max-w-6xl pb-24 md:px-6 md:pb-12">
+      <header className="px-4 pt-4 md:px-0 md:pt-6">
+        <h1 className="text-lg font-extrabold md:text-2xl">My List</h1>
         <p className="mt-1 text-xs text-white/50">Series you saved for later</p>
       </header>
 
@@ -28,7 +28,7 @@ export function MyList() {
           </Link>
         </div>
       ) : (
-        <div className="mt-4 grid grid-cols-3 gap-3 px-4">
+        <div className="mt-4 grid grid-cols-3 gap-3 px-4 sm:grid-cols-4 md:grid-cols-5 md:gap-4 md:px-0 lg:grid-cols-6">
           {items.map((s) => (
             <Link key={s!.id} to={`/series/${s!.id}`}>
               <Poster series={s!} className="aspect-[2/3] w-full" />
