@@ -1,4 +1,4 @@
-const BASE_URL = 'https://dramabox-eosin.vercel.app'
+const BASE_URL = 'https://wahaladrama.vercel.app'
 const DEFAULT_TITLE = 'Wahala — Short Drama App for Africa | Watch Free Vertical Series'
 const DEFAULT_DESC =
   "Wahala is Africa's short drama app. Binge addictive 1–2 minute vertical episodes from Nigeria, Kenya, Ghana, South Africa and more. First episodes free."

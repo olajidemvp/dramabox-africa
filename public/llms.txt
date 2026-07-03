@@ -24,17 +24,17 @@ specifically for African viewers, unlike global short-drama apps.
 
 ## Popular series
 
-- [Heir of Accra](https://dramabox-eosin.vercel.app/series/accra-throne): revenge drama, Ghana — street hawker discovers he is a royal heir. 72 episodes.
-- [The Billionaire's Secret Wife](https://dramabox-eosin.vercel.app/series/lagos-billionaire): romance, Nigeria — housemaid secretly marries a Lagos billionaire. 60 episodes.
-- [Broken Vows in Joburg](https://dramabox-eosin.vercel.app/series/joburg-vows): revenge, South Africa — betrayed wife returns as a mystery investor. 56 episodes.
-- [Nairobi Heartbeat](https://dramabox-eosin.vercel.app/series/nairobi-heartbeat): romance, Kenya — amnesiac CEO falls for a matatu driver. 48 episodes.
-- [Daughters of the Nile](https://dramabox-eosin.vercel.app/series/cairo-nights): mystery, Egypt — three sisters hunt a hidden fortune. 52 episodes.
+- [Heir of Accra](https://wahaladrama.vercel.app/series/accra-throne): revenge drama, Ghana — street hawker discovers he is a royal heir. 72 episodes.
+- [The Billionaire's Secret Wife](https://wahaladrama.vercel.app/series/lagos-billionaire): romance, Nigeria — housemaid secretly marries a Lagos billionaire. 60 episodes.
+- [Broken Vows in Joburg](https://wahaladrama.vercel.app/series/joburg-vows): revenge, South Africa — betrayed wife returns as a mystery investor. 56 episodes.
+- [Nairobi Heartbeat](https://wahaladrama.vercel.app/series/nairobi-heartbeat): romance, Kenya — amnesiac CEO falls for a matatu driver. 48 episodes.
+- [Daughters of the Nile](https://wahaladrama.vercel.app/series/cairo-nights): mystery, Egypt — three sisters hunt a hidden fortune. 52 episodes.
 
 ## Key pages
 
-- [Home](https://dramabox-eosin.vercel.app/): trending short dramas and daily rewards
-- [Discover](https://dramabox-eosin.vercel.app/discover): browse and search the full catalog by genre and country
-- [Wallet](https://dramabox-eosin.vercel.app/wallet): coin packs and mobile-money payment options
+- [Home](https://wahaladrama.vercel.app/): trending short dramas and daily rewards
+- [Discover](https://wahaladrama.vercel.app/discover): browse and search the full catalog by genre and country
+- [Wallet](https://wahaladrama.vercel.app/wallet): coin packs and mobile-money payment options
 
 ## Facts
 
