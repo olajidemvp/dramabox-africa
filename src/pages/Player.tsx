@@ -19,6 +19,7 @@ export function Player() {
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const touchStartY = useRef<number | null>(null)
+  const lastWheel = useRef(0) // trackpad inertia guard
   const [paused, setPaused] = useState(false)
   const [showUnlock, setShowUnlock] = useState(false)
   const [progressPct, setProgressPct] = useState(0)
@@ -74,8 +75,10 @@ export function Player() {
         else if (dy > 60) goTo(epNum - 1)
       }}
       onWheel={(e) => {
-        if (e.deltaY > 40) goTo(epNum + 1)
-        else if (e.deltaY < -40) goTo(epNum - 1)
+        const now = Date.now()
+        if (now - lastWheel.current < 600 || Math.abs(e.deltaY) <= 40) return
+        lastWheel.current = now
+        goTo(epNum + (e.deltaY > 0 ? 1 : -1))
       }}
     >
       {unlocked ? (

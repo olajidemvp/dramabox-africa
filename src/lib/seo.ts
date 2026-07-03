@@ -1,3 +1,5 @@
+import { getSeries } from '../data/catalog'
+
 const BASE_URL = 'https://wahaladrama.vercel.app'
 const DEFAULT_TITLE = 'Wahala — Short Drama App for Africa | Watch Free Vertical Series'
 const DEFAULT_DESC =
@@ -37,24 +39,33 @@ function setTag(selector: string, create: () => HTMLElement, attr: string, value
   el.setAttribute(attr, value)
 }
 
-export function applyMeta(path: string, custom?: { title: string; desc: string }) {
-  const meta = custom ?? ROUTE_META[path] ?? { title: DEFAULT_TITLE, desc: DEFAULT_DESC }
-  document.title = meta.title
+// Resolves any app path to its meta + canonical. Series and watch pages share
+// series-specific meta; watch URLs canonicalize to their series page.
+function resolve(path: string): { canonical: string; title: string; desc: string } {
+  const seriesMatch = path.match(/^\/(?:series|watch)\/([^/]+)/)
+  const series = seriesMatch ? getSeries(seriesMatch[1]) : undefined
+  if (series) {
+    return {
+      canonical: `/series/${series.id}`,
+      title: `${series.title} — ${series.genre} Short Drama from ${series.country} | Wahala`,
+      desc: `Watch ${series.title}, a ${series.episodeCount}-episode ${series.genre.toLowerCase()} short drama from ${series.country}. ${series.synopsis}`.slice(0, 158),
+    }
+  }
+  const meta = ROUTE_META[path] ?? { title: DEFAULT_TITLE, desc: DEFAULT_DESC }
+  return { canonical: path, ...meta }
+}
+
+export function applyMeta(path: string) {
+  const { canonical, title, desc } = resolve(path)
+  document.title = title
   setTag('meta[name="description"]', () => {
     const m = document.createElement('meta')
     m.setAttribute('name', 'description')
     return m
-  }, 'content', meta.desc)
+  }, 'content', desc)
   setTag('link[rel="canonical"]', () => {
     const l = document.createElement('link')
     l.setAttribute('rel', 'canonical')
     return l
-  }, 'href', `${BASE_URL}${path === '/' ? '/' : path}`)
-}
-
-export function seriesMeta(name: string, country: string, genre: string, episodes: number, synopsis: string) {
-  return {
-    title: `${name} — ${genre} Short Drama from ${country} | Wahala`,
-    desc: `Watch ${name}, a ${episodes}-episode ${genre.toLowerCase()} short drama from ${country}. ${synopsis}`.slice(0, 158),
-  }
+  }, 'href', `${BASE_URL}${canonical}`)
 }

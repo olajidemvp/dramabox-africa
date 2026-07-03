@@ -25,8 +25,7 @@ function Shell() {
 
   useEffect(() => {
     track('page_view', { path: location.pathname })
-    // Series pages set their own richer meta in SeriesDetail.
-    if (!location.pathname.startsWith('/series/')) applyMeta(location.pathname)
+    applyMeta(location.pathname)
   }, [location.pathname])
 
   useEffect(() => {

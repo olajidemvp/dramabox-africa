@@ -96,8 +96,17 @@ function load(): Persisted {
 
 const CHECKIN_REWARDS = [20, 25, 30, 35, 40, 50, 100] // day 1..7, repeats
 
+function localDateStr(d: Date): string {
+  // Local calendar date — daily rewards must roll over at the viewer's
+  // midnight (Lagos/Nairobi), not UTC midnight.
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
 function todayStr(): string {
-  return new Date().toISOString().slice(0, 10)
+  return localDateStr(new Date())
 }
 
 const Ctx = createContext<AppState | null>(null)
@@ -136,7 +145,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     claimCheckin: () => {
       const today = todayStr()
       if (state.checkinLast === today) return null
-      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10)
+      const yesterday = localDateStr(new Date(Date.now() - 86400000))
       const streak = state.checkinLast === yesterday ? state.checkinStreak + 1 : 1
       const bonus = CHECKIN_REWARDS[(streak - 1) % CHECKIN_REWARDS.length]
       setState((s) => ({ ...s, coins: s.coins + bonus, checkinLast: today, checkinStreak: streak }))

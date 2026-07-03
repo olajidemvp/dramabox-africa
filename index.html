@@ -104,12 +104,39 @@
       ]
     }
     </script>
+
+    <style>
+      /* JS-capable browsers hide the crawler fallback before first paint and
+         show a branded splash until React mounts. Non-JS crawlers see the
+         full fallback content. */
+      html.js #seo-fallback { display: none; }
+      #splash { display: none; }
+      html.js #splash {
+        display: flex;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        background: #0a0a0d;
+        color: #f4f4f6;
+        font-family: system-ui, sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        animation: splash-pulse 1.2s ease-in-out infinite;
+      }
+      @keyframes splash-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.45; }
+      }
+    </style>
   </head>
   <body>
+    <script>document.documentElement.classList.add('js')</script>
     <div id="root">
+      <div id="splash">Wahala<span style="color:#ff3d2e">!</span></div>
       <!-- Static fallback: crawlable by search engines and AI crawlers that do not
-           execute JavaScript. Replaced instantly when the app hydrates. -->
-      <main style="font-family:system-ui,sans-serif;background:#0a0a0d;color:#f4f4f6;min-height:100vh;padding:24px;max-width:640px;margin:0 auto">
+           execute JavaScript. Hidden pre-paint when JS is available. -->
+      <main id="seo-fallback" style="font-family:system-ui,sans-serif;background:#0a0a0d;color:#f4f4f6;min-height:100vh;padding:24px;max-width:640px;margin:0 auto">
         <h1>Wahala — the short drama app for Africa</h1>
         <p>
           Binge addictive short dramas made for your phone: vertical episodes of 1–2 minutes,

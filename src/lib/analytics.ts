@@ -50,13 +50,18 @@ export async function readInsights(): Promise<Record<string, unknown>> {
   return res.json()
 }
 
+// Debug ring buffer, cached in memory — parse localStorage once per session,
+// not on every event (track fires per swipe/navigation on low-end devices).
+let eventBuffer: unknown[] | null = null
+
 export function track(event: string, props: Record<string, unknown> = {}): void {
   const enriched = { ...props, variant: priceVariant, ep_price: EP_PRICE }
 
   try {
-    const buf: unknown[] = JSON.parse(localStorage.getItem(BUFFER_KEY) ?? '[]')
-    buf.push({ t: Date.now(), event, ...enriched })
-    localStorage.setItem(BUFFER_KEY, JSON.stringify(buf.slice(-200)))
+    eventBuffer ??= JSON.parse(localStorage.getItem(BUFFER_KEY) ?? '[]') as unknown[]
+    eventBuffer.push({ t: Date.now(), event, ...enriched })
+    if (eventBuffer.length > 200) eventBuffer.splice(0, eventBuffer.length - 200)
+    localStorage.setItem(BUFFER_KEY, JSON.stringify(eventBuffer))
   } catch {
     /* buffer is best-effort */
   }
