@@ -21,7 +21,10 @@ export interface Series {
   rating: number
   views: string
   episodeCount: number
-  poster: { from: string; to: string; emoji: string }
+  // Gradient + emoji stay as the instant-paint fallback while `image` loads
+  // (and as the offline fallback — most viewers are on 3G).
+  poster: { from: string; to: string; emoji: string; image?: string }
+  heroImage?: string
   tags: string[]
   episodes: Episode[]
 }
@@ -56,7 +59,8 @@ export const SERIES: Series[] = [
     rating: 9.2,
     views: '12.4M',
     episodeCount: 60,
-    poster: { from: '#7c2d12', to: '#facc15', emoji: '💍' },
+    poster: { from: '#7c2d12', to: '#facc15', emoji: '💍', image: '/posters/lagos-billionaire.jpg' },
+    heroImage: '/posters/lagos-billionaire-hero.jpg',
     tags: ['Trending', 'Billionaire', 'Contract Marriage'],
     episodes: makeEpisodes('lagos-billionaire', 60, 8),
   },
@@ -72,7 +76,8 @@ export const SERIES: Series[] = [
     rating: 8.9,
     views: '8.1M',
     episodeCount: 48,
-    poster: { from: '#14532d', to: '#22d3ee', emoji: '🚌' },
+    poster: { from: '#14532d', to: '#22d3ee', emoji: '🚌', image: '/posters/nairobi-heartbeat.jpg' },
+    heroImage: '/posters/nairobi-heartbeat-hero.jpg',
     tags: ['Amnesia', 'Sweet Love'],
     episodes: makeEpisodes('nairobi-heartbeat', 48, 6),
   },
@@ -88,7 +93,8 @@ export const SERIES: Series[] = [
     rating: 9.5,
     views: '15.7M',
     episodeCount: 72,
-    poster: { from: '#78350f', to: '#dc2626', emoji: '👑' },
+    poster: { from: '#78350f', to: '#dc2626', emoji: '👑', image: '/posters/accra-throne.jpg' },
+    heroImage: '/posters/accra-throne-hero.jpg',
     tags: ['Hidden Identity', 'Revenge', 'Hot'],
     episodes: makeEpisodes('accra-throne', 72, 10),
   },
@@ -104,7 +110,8 @@ export const SERIES: Series[] = [
     rating: 9.1,
     views: '10.9M',
     episodeCount: 56,
-    poster: { from: '#312e81', to: '#ec4899', emoji: '🔥' },
+    poster: { from: '#312e81', to: '#ec4899', emoji: '🔥', image: '/posters/joburg-vows.jpg' },
+    heroImage: '/posters/joburg-vows-hero.jpg',
     tags: ['Betrayal', 'Comeback'],
     episodes: makeEpisodes('joburg-vows', 56, 6),
   },
@@ -120,7 +127,7 @@ export const SERIES: Series[] = [
     rating: 8.6,
     views: '6.3M',
     episodeCount: 40,
-    poster: { from: '#9a3412', to: '#65a30d', emoji: '🍲' },
+    poster: { from: '#9a3412', to: '#65a30d', emoji: '🍲', image: '/posters/mama-tinubu-kitchen.jpg' },
     tags: ['Comedy', 'Inheritance'],
     episodes: makeEpisodes('mama-tinubu-kitchen', 40, 5),
   },
@@ -136,7 +143,7 @@ export const SERIES: Series[] = [
     rating: 8.8,
     views: '5.2M',
     episodeCount: 44,
-    poster: { from: '#701a75', to: '#f59e0b', emoji: '💼' },
+    poster: { from: '#701a75', to: '#f59e0b', emoji: '💼', image: '/posters/kampala-ceo.jpg' },
     tags: ['CEO', 'Arranged Marriage'],
     episodes: makeEpisodes('kampala-ceo', 44, 6),
   },
@@ -152,7 +159,7 @@ export const SERIES: Series[] = [
     rating: 8.7,
     views: '7.8M',
     episodeCount: 52,
-    poster: { from: '#0c4a6e', to: '#eab308', emoji: '🌙' },
+    poster: { from: '#0c4a6e', to: '#eab308', emoji: '🌙', image: '/posters/cairo-nights.jpg' },
     tags: ['Mystery', 'Sisters'],
     episodes: makeEpisodes('cairo-nights', 52, 6),
   },
@@ -168,7 +175,7 @@ export const SERIES: Series[] = [
     rating: 8.4,
     views: '3.9M',
     episodeCount: 36,
-    poster: { from: '#155e75', to: '#f97316', emoji: '🤼' },
+    poster: { from: '#155e75', to: '#f97316', emoji: '🤼', image: '/posters/dakar-destiny.jpg' },
     tags: ['Sports', 'Underdog'],
     episodes: makeEpisodes('dakar-destiny', 36, 5),
   },
@@ -184,7 +191,7 @@ export const SERIES: Series[] = [
     rating: 8.5,
     views: '2.7M',
     episodeCount: 38,
-    poster: { from: '#1e3a8a', to: '#10b981', emoji: '💻' },
+    poster: { from: '#1e3a8a', to: '#10b981', emoji: '💻', image: '/posters/kigali-code.jpg' },
     tags: ['Enemies to Lovers', 'Tech'],
     episodes: makeEpisodes('kigali-code', 38, 5),
   },
@@ -200,7 +207,7 @@ export const SERIES: Series[] = [
     rating: 8.3,
     views: '3.1M',
     episodeCount: 42,
-    poster: { from: '#0e7490', to: '#a21caf', emoji: '🌊' },
+    poster: { from: '#0e7490', to: '#a21caf', emoji: '🌊', image: '/posters/zanzibar-tide.jpg' },
     tags: ['Secrets', 'Coastal'],
     episodes: makeEpisodes('zanzibar-tide', 42, 5),
   },
@@ -237,7 +244,7 @@ export interface ComingSoon {
   title: string
   hook: string
   country: string
-  poster: { from: string; to: string; emoji: string }
+  poster: { from: string; to: string; emoji: string; image?: string }
 }
 
 export const COMING_SOON: ComingSoon[] = [
@@ -246,28 +253,28 @@ export const COMING_SOON: ComingSoon[] = [
     title: 'Queen of Owambe',
     hook: 'Lagos party planner discovers her biggest client is her runaway father.',
     country: 'Nigeria',
-    poster: { from: '#86198f', to: '#f59e0b', emoji: '🎉' },
+    poster: { from: '#86198f', to: '#f59e0b', emoji: '🎉', image: '/posters/queen-of-owambe.jpg' },
   },
   {
     id: 'boda-boda-love',
     title: 'Boda Boda Love',
     hook: 'Nairobi rider carries one passenger who changes his life forever.',
     country: 'Kenya',
-    poster: { from: '#166534', to: '#fbbf24', emoji: '🏍️' },
+    poster: { from: '#166534', to: '#fbbf24', emoji: '🏍️', image: '/posters/boda-boda-love.jpg' },
   },
   {
     id: 'campus-cruise',
     title: 'Campus Cruise',
     hook: 'Legon fresher juggles two identities: scholarship kid by day, TikTok star by night.',
     country: 'Ghana',
-    poster: { from: '#1d4ed8', to: '#f43f5e', emoji: '🎓' },
+    poster: { from: '#1d4ed8', to: '#f43f5e', emoji: '🎓', image: '/posters/campus-cruise.jpg' },
   },
   {
     id: 'herbalists-daughter',
     title: "The Herbalist's Daughter",
     hook: 'She can cure anything — except the curse on the family that destroyed hers.',
     country: 'Nigeria',
-    poster: { from: '#14532d', to: '#84cc16', emoji: '🌿' },
+    poster: { from: '#14532d', to: '#84cc16', emoji: '🌿', image: '/posters/herbalists-daughter.jpg' },
   },
 ]
 

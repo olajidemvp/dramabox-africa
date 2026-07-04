@@ -1,16 +1,27 @@
 import type { Series } from '../data/catalog'
 
 export function Poster({ series, className = '' }: { series: Series; className?: string }) {
-  const { from, to, emoji } = series.poster
+  const { from, to, emoji, image } = series.poster
   return (
     <div
       className={`group relative overflow-hidden rounded-xl no-select transition-transform duration-300 hover:scale-[1.04] hover:shadow-xl hover:shadow-black/60 ${className}`}
       style={{ background: `linear-gradient(160deg, ${from} 0%, ${to} 100%)` }}
     >
       <div className="poster-sheen absolute inset-0" />
-      <div className="absolute inset-0 flex items-center justify-center text-5xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.5)] transition-transform duration-300 group-hover:scale-110">
+      {/* Emoji stays underneath as the instant-paint / offline fallback */}
+      <div className="absolute inset-0 flex items-center justify-center text-5xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.5)]">
         {emoji}
       </div>
+      {image && (
+        <img
+          src={image}
+          alt=""
+          loading="lazy"
+          draggable={false}
+          onError={(e) => (e.currentTarget.style.display = 'none')}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+      )}
 
       {/* Hover play overlay (desktop) */}
       <div className="absolute inset-0 hidden items-center justify-center bg-black/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100 md:flex">

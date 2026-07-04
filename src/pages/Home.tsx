@@ -13,10 +13,10 @@ export function Home() {
   const [checkinToast, setCheckinToast] = useState('')
   const [slide, setSlide] = useState(0)
   const heroes = HERO_IDS.map((id) => getSeries(id)!).filter(Boolean)
-  const hero = heroes[slide % heroes.length]
+  const active = slide % heroes.length
 
   useEffect(() => {
-    const t = setInterval(() => setSlide((s) => (s + 1) % heroes.length), 5000)
+    const t = setInterval(() => setSlide((s) => (s + 1) % heroes.length), 7000)
     return () => clearInterval(t)
   }, [heroes.length])
 
@@ -63,58 +63,102 @@ export function Home() {
         </button>
       )}
 
-      {/* Hero carousel */}
-      <div className="relative mx-4 mt-4 overflow-hidden rounded-2xl md:mx-0 md:mt-5">
-        <Link to={`/series/${hero.id}`} key={hero.id} className="slide-fade block">
-          <div
-            className="relative h-52 w-full md:h-80 lg:h-96"
-            style={{ background: `linear-gradient(120deg, ${hero.poster.from}, ${hero.poster.to})` }}
+      {/* Cinematic hero carousel */}
+      <div className="relative mx-4 mt-4 overflow-hidden rounded-2xl shadow-2xl shadow-black/60 md:mx-0 md:mt-5">
+        <div className="relative h-64 w-full md:h-[26rem] lg:h-[30rem]">
+          {heroes.map((h, i) => {
+            const isActive = i === active
+            return (
+              <Link
+                key={h.id}
+                to={`/series/${h.id}`}
+                aria-hidden={!isActive}
+                tabIndex={isActive ? 0 : -1}
+                className={`absolute inset-0 block transition-opacity duration-1000 ${
+                  isActive ? 'z-10 opacity-100' : 'pointer-events-none z-0 opacity-0'
+                }`}
+              >
+                {/* Gradient base paints instantly; key art fades over it */}
+                <div
+                  className="absolute inset-0"
+                  style={{ background: `linear-gradient(120deg, ${h.poster.from}, ${h.poster.to})` }}
+                />
+                <div className="poster-sheen absolute inset-0" />
+                <div className="absolute inset-0 flex items-center justify-center text-7xl drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] md:text-9xl">
+                  {h.poster.emoji}
+                </div>
+                {(h.heroImage ?? h.poster.image) && (
+                  <img
+                    src={h.heroImage ?? h.poster.image}
+                    alt=""
+                    draggable={false}
+                    onError={(e) => (e.currentTarget.style.display = 'none')}
+                    className={`absolute inset-0 h-full w-full object-cover ${isActive ? 'kenburns' : ''}`}
+                  />
+                )}
+
+                {/* Cinematic grade: scrims, grain, vignette */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-transparent" />
+                <div className="absolute inset-0 hidden bg-gradient-to-r from-black/70 via-transparent to-transparent md:block" />
+                <div className="film-grain absolute inset-0" />
+                <div className="hero-vignette absolute inset-0" />
+
+                <div className="absolute inset-x-0 bottom-0 p-4 pb-5 md:max-w-2xl md:p-8 md:pb-9">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gold md:text-xs">
+                    🔥 #{i + 1} in Africa this week
+                  </p>
+                  <h2 className="hero-title mt-1 text-2xl font-extrabold leading-tight tracking-tight md:text-4xl lg:text-5xl">
+                    {h.title}
+                  </h2>
+                  <p className="hero-title mt-1 text-xs text-white/80 md:mt-2 md:text-base">{h.tagline}</p>
+                  <p className="mt-1.5 hidden items-center gap-2 text-xs text-white/60 md:flex">
+                    <span className="font-semibold text-gold">★ {h.rating}</span>
+                    <span>·</span>
+                    <span>{h.genre}</span>
+                    <span>·</span>
+                    <span>{h.country}</span>
+                    <span>·</span>
+                    <span>{h.episodeCount} episodes</span>
+                  </p>
+                  <span className="mt-3 inline-block rounded-full bg-brand px-5 py-2 text-xs font-bold shadow-lg shadow-brand/40 transition hover:bg-brand-dark md:mt-4 md:px-7 md:py-2.5 md:text-sm">
+                    ▶ Watch Free
+                  </span>
+                </div>
+              </Link>
+            )
+          })}
+
+          {/* Arrows */}
+          <button
+            onClick={() => setSlide((s) => (s - 1 + heroes.length) % heroes.length)}
+            className="absolute left-2 top-1/2 z-20 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white/80 backdrop-blur transition hover:bg-black/70 md:flex"
+            aria-label="Previous"
           >
-            <div className="poster-sheen absolute inset-0" />
-            <div className="absolute inset-0 flex items-center justify-center text-7xl drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)] md:text-9xl">
-              {hero.poster.emoji}
-            </div>
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 pt-12 md:p-8 md:pt-20">
-              <p className="text-[10px] font-bold uppercase tracking-wide text-gold md:text-xs">
-                #{(slide % heroes.length) + 1} in Africa this week
-              </p>
-              <h2 className="text-xl font-extrabold md:text-3xl">{hero.title}</h2>
-              <p className="mt-0.5 text-xs text-white/70 md:mt-1 md:text-sm">{hero.tagline}</p>
-              <span className="mt-2 inline-block rounded-full bg-brand px-4 py-1.5 text-xs font-bold transition hover:bg-brand-dark md:mt-3 md:px-6 md:py-2 md:text-sm">
-                ▶ Watch Free
-              </span>
-            </div>
+            ←
+          </button>
+          <button
+            onClick={() => setSlide((s) => (s + 1) % heroes.length)}
+            className="absolute right-2 top-1/2 z-20 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white/80 backdrop-blur transition hover:bg-black/70 md:flex"
+            aria-label="Next"
+          >
+            →
+          </button>
+
+          {/* Progress dots — active dot fills in sync with the slide timer */}
+          <div className="absolute bottom-2.5 right-3 z-20 flex gap-1.5 md:bottom-4 md:right-4">
+            {heroes.map((h, i) => (
+              <button
+                key={h.id}
+                onClick={() => setSlide(i)}
+                aria-label={`Slide ${i + 1}`}
+                className={`h-1.5 overflow-hidden rounded-full transition-all ${
+                  i === active ? 'w-7 bg-white/30' : 'w-1.5 bg-white/40 hover:bg-white/70'
+                }`}
+              >
+                {i === active && <span key={slide} className="dot-fill block h-full bg-white" />}
+              </button>
+            ))}
           </div>
-        </Link>
-
-        {/* Arrows */}
-        <button
-          onClick={() => setSlide((s) => (s - 1 + heroes.length) % heroes.length)}
-          className="absolute left-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white/80 backdrop-blur transition hover:bg-black/70 md:flex"
-          aria-label="Previous"
-        >
-          ←
-        </button>
-        <button
-          onClick={() => setSlide((s) => (s + 1) % heroes.length)}
-          className="absolute right-2 top-1/2 hidden h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white/80 backdrop-blur transition hover:bg-black/70 md:flex"
-          aria-label="Next"
-        >
-          →
-        </button>
-
-        {/* Dots */}
-        <div className="absolute bottom-2 right-3 flex gap-1.5 md:bottom-3">
-          {heroes.map((h, i) => (
-            <button
-              key={h.id}
-              onClick={() => setSlide(i)}
-              aria-label={`Slide ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all ${
-                i === slide % heroes.length ? 'w-5 bg-white' : 'w-1.5 bg-white/40'
-              }`}
-            />
-          ))}
         </div>
       </div>
 
@@ -129,10 +173,19 @@ export function Home() {
                 className="flex w-56 shrink-0 items-center gap-3 rounded-xl bg-surface-2 p-2 transition hover:bg-surface-3"
               >
                 <div
-                  className="flex h-14 w-10 shrink-0 items-center justify-center rounded-lg text-xl"
+                  className="relative flex h-14 w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg text-xl"
                   style={{ background: `linear-gradient(160deg, ${series!.poster.from}, ${series!.poster.to})` }}
                 >
                   {series!.poster.emoji}
+                  {series!.poster.image && (
+                    <img
+                      src={series!.poster.image}
+                      alt=""
+                      loading="lazy"
+                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  )}
                 </div>
                 <div className="min-w-0">
                   <p className="truncate text-xs font-semibold">{series!.title}</p>
@@ -178,11 +231,21 @@ export function Home() {
             return (
               <div key={c.id} className="w-40 shrink-0 overflow-hidden rounded-xl bg-surface-2 transition hover:bg-surface-3 md:w-auto">
                 <div
-                  className="relative flex h-24 items-center justify-center text-4xl md:h-32"
+                  className="relative flex h-24 items-center justify-center overflow-hidden text-4xl md:h-32"
                   style={{ background: `linear-gradient(160deg, ${c.poster.from}, ${c.poster.to})` }}
                 >
                   <div className="poster-sheen absolute inset-0" />
                   <span className="drop-shadow-lg">{c.poster.emoji}</span>
+                  {c.poster.image && (
+                    <img
+                      src={c.poster.image}
+                      alt=""
+                      loading="lazy"
+                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/60 to-transparent" />
                 </div>
                 <div className="p-2.5 md:p-3">
                   <p className="text-xs font-bold leading-tight md:text-sm">{c.title}</p>

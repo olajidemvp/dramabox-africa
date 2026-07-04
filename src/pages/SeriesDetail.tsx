@@ -26,19 +26,28 @@ export function SeriesDetail() {
     <div className="pb-24 md:pb-12">
       {/* Mobile hero banner */}
       <div
-        className="relative h-64 md:hidden"
+        className="relative h-64 overflow-hidden md:hidden"
         style={{ background: `linear-gradient(150deg, ${series.poster.from}, ${series.poster.to})` }}
       >
         <div className="poster-sheen absolute inset-0" />
-        <button
-          onClick={() => navigate(-1)}
-          className="absolute left-3 top-3 z-10 rounded-full bg-black/40 px-3 py-1.5 text-sm"
-        >
-          ←
-        </button>
         <div className="absolute inset-0 flex items-center justify-center text-8xl drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
           {series.poster.emoji}
         </div>
+        {(series.heroImage ?? series.poster.image) && (
+          <img
+            src={series.heroImage ?? series.poster.image}
+            alt=""
+            onError={(e) => (e.currentTarget.style.display = 'none')}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )}
+        <div className="film-grain absolute inset-0" />
+        <button
+          onClick={() => navigate(-1)}
+          className="absolute left-3 top-3 z-10 rounded-full bg-black/40 px-3 py-1.5 text-sm backdrop-blur"
+        >
+          ←
+        </button>
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0a0a0d] via-black/60 to-transparent p-4 pt-16">
           <h1 className="text-xl font-extrabold">{series.title}</h1>
           <p className="mt-1 text-xs text-white/70">
@@ -55,10 +64,18 @@ export function SeriesDetail() {
           {/* Desktop poster column */}
           <div className="hidden md:block">
             <div
-              className="poster-sheen relative flex aspect-[2/3] items-center justify-center rounded-2xl text-8xl shadow-2xl shadow-black/50"
+              className="poster-sheen relative flex aspect-[2/3] items-center justify-center overflow-hidden rounded-2xl text-8xl shadow-2xl shadow-black/50"
               style={{ background: `linear-gradient(160deg, ${series.poster.from}, ${series.poster.to})` }}
             >
               <span className="drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">{series.poster.emoji}</span>
+              {series.poster.image && (
+                <img
+                  src={series.poster.image}
+                  alt=""
+                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              )}
               <span className="absolute left-3 top-3 rounded bg-black/55 px-2 py-1 text-xs font-semibold text-gold backdrop-blur-sm">
                 ★ {series.rating}
               </span>
